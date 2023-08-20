@@ -1,0 +1,5 @@
+---
+
+cert_manager_freeipa_user: cert-manager-sa
+idm_group: ipaservers
+kube_masters_group: kube_master

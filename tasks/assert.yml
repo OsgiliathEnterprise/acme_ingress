@@ -1,0 +1,7 @@
+---
+
+- name: Assert | test if hostname_reboot is set correctly
+  ansible.builtin.assert:
+    that:
+      - company_domain is defined
+      - company_domain is string

@@ -1,0 +1,17 @@
+---
+
+- name: Facts | retrieve current machine ip
+  ansible.builtin.setup:
+    gather_subset:
+      - network
+  register: acme_ingress_current_host_facts
+
+- name: Facts | debug preferred_nic
+  ansible.builtin.debug:
+    var: idm_preferred_nic
+    verbosity: 3
+
+- name: Facts | compute ip if preferred_nic is not set
+  ansible.builtin.debug:
+    msg: "{{ acme_ingress_current_host_facts.ansible_facts['ansible_' + idm_preferred_nic | replace('-', '_')].ipv4.address if idm_preferred_nic is defined else acme_ingress_current_host_facts.ansible_facts.ansible_default_ipv4.address | default(acme_ingress_current_host_facts.ansible_facts.ansible_all_ipv4_addresses[0]) }}"
+  register: acme_ingress_ipa_current_host_ip

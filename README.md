@@ -1,11 +1,13 @@
 Ansible SecureHost
 =========
 
-* Galaxy: [![Ansible Galaxy](https://img.shields.io/badge/galaxy-tcharl.freeipa_server-660198.svg?style=flat)](https://galaxy.ansible.com/tcharl/freeipa_server)
-* Lint, Tests & requirements: ![Molecule](https://github.com/OsgiliathEnterprise/freeipa_server/workflows/Molecule/badge.svg)
+* Galaxy: [![Ansible Galaxy](https://img.shields.io/badge/galaxy-tcharl.acme_ingress-660198.svg?style=flat)](https://galaxy.ansible.com/tcharl/acme_ingress)
+* Lint, requirements: ![Molecule](https://github.com/OsgiliathEnterprise/acme_ingress/workflows/Molecule/badge.svg)
+* Tests: [![Build Status](https://travis-ci.com/OsgiliathEnterprise/acme_ingress.svg?branch=master)](https://travis-ci.com/OsgiliathEnterprise/acme_ingress)
 * Chat: [![Join the chat at https://gitter.im/OsgiliathEnterprise/platform](https://badges.gitter.im/OsgiliathEnterprise/platform.svg)](https://gitter.im/OsgiliathEnterprise/platform?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-Wrapper on top of Ansible freeipa server to configure it in a simple way
+Bridges the gap between Cert-manager and Freeipa ACME server.
+deprecated in favor of [tcharl.kube_certmanager]
 
 Requirements
 ------------

@@ -5,3 +5,19 @@
   ansible.builtin.import_tasks: requirements.yml
   when:
     - standalone_role
+
+- name: Get idm informations
+  ansible.builtin.include_tasks: ipa-facts.yml
+  when: idm_group | default("") | string in group_names
+
+- name: Create tsig key
+  ansible.builtin.import_tasks: idm.yml
+  when: idm_group | default("") | string in group_names
+
+- name: Create tsig key
+  ansible.builtin.include_tasks: kubernetes.yml
+  when: kube_masters_group | default("") | string in group_names
+
+#- name: Certmanager
+#  ansible.builtin.import_tasks: cert-manager.yml
+#  when: kube_masters_group | default("") | string in group_names

@@ -3,11 +3,10 @@
   hosts: master.osgiliath.test
   vars:
     secure_logs: False
-    # preferred_nic: "eth1"
     kube_firewall_zone: 'public'
-    preferred_nic: "eth1"
-    reset_kube: True
     standalone_role: False
+    reset_kube: True
+    preferred_nic: "eth1"
     company_domain: osgiliath.test
     company_realm_password: '123ADMin'
     company_ad_password: '123ADmPass'

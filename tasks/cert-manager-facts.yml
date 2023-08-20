@@ -1,0 +1,35 @@
+---
+
+- name: Facts | retrieve current hostname
+  ansible.builtin.command: "hostname"
+  changed_when: False
+  register: acme_ingress_current_hostname
+
+- name: Facts | compute server hostname
+  ansible.builtin.debug:
+    msg: "{{ hostname if hostname is defined and hostname.endswith(company_domain) else hostname + '.' + company_domain if hostname is defined else acme_ingress_current_hostname.stdout if acme_ingress_current_hostname.stdout.endswith(company_domain) else idm_server_default_domain_prefix + '.' + company_domain }}"
+  register: acme_ingress_server_host
+
+- name: Facts | create random but idempotent password
+  ansible.builtin.set_fact:
+    password: "{{ lookup('ansible.builtin.password', '/dev/null', seed=inventory_hostname) }}"
+  register: acme_ingress_user_password
+
+- name: Facts | debug idempotent password
+  ansible.builtin.debug:
+    msg: "{{ acme_ingress_user_password }}"
+
+- name: Facts | create company domain property
+  ansible.builtin.debug:
+    msg: "{{ company_domain }}"
+  register: acme_ingress_company_domain
+
+- name: Facts | create company real pwd
+  ansible.builtin.debug:
+    msg: "{{ company_realm_password }}"
+  register: acme_ingress_company_realm_password
+
+- name: Facts | create company real pwd
+  ansible.builtin.debug:
+    msg: "{{ company_ad_password }}"
+  register: acme_ingress_company_ad_password

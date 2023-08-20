@@ -1,0 +1,26 @@
+---
+
+- name: Facts
+  ansible.builtin.import_tasks: cert-manager-facts.yml
+
+- name: Create freeipa user
+  ansible.builtin.include_role:
+    name: tcharl.ansible_users
+  vars:
+    standalone_role: False
+    company_domain: "{{ acme_ingress_company_domain.msg }}" # That server's hostname will be should ipa."{{ company_domain }}"
+    company_realm_password: "{{ acme_ingress_company_realm_password.msg }}"
+    company_ad_password: "{{ acme_ingress_company_ad_password.msg }}"
+    ipa_users_user_list:
+      - name: "{{ cert_manager_freeipa_user }}"
+        first: Cert
+        last: Manager
+        pwd: "{{ acme_ingress_user_password.ansible_facts.password }}"
+        update_password: on_create
+        passwordexpiration: "2025-01-19 23:59:59"
+        group: cert-manager
+        groups:
+          - wheel
+
+- name: Facts
+  ansible.builtin.include_tasks: freeipa-server-acme.yml

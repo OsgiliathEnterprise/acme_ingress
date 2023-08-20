@@ -1,0 +1,50 @@
+---
+
+- name: Freeipa-server-acme | create temp directory to host template
+  changed_when: false
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: cert_manager
+  register: cert_manager_kustomize_temp_directory
+
+- name: Freeipa-server-acme | create kustomize root
+  changed_when: false
+  ansible.builtin.file:
+    state: directory
+    path: "{{ cert_manager_kustomize_temp_directory.path }}/freeipa-issuer"
+    owner: root
+    group: root
+    mode: 0755
+  become: True
+
+- name: Freeipa-server-acme | copy the secret file
+  ansible.builtin.template:
+    src: freeipa-issuer/secret.yaml.j2
+    dest: "{{ cert_manager_kustomize_temp_directory.path }}/freeipa-issuer/secret.yaml"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- name: Freeipa-server-acme | Copy the ACME cluster issuer template
+  kubernetes.core.k8s:
+    state: present
+    apply: True
+    src: "{{ cert_manager_kustomize_temp_directory.path }}/freeipa-issuer/secret.yaml"
+  become: true
+
+- name: Freeipa-server-acme | copy the cluster issuer
+  ansible.builtin.template:
+    src: freeipa-issuer/certmanager_clusterissuer.yaml.j2
+    dest: "{{ cert_manager_kustomize_temp_directory.path }}/freeipa-issuer/certmanager_clusterissuer.yaml"
+    owner: root
+    group: root
+    mode: '0644'
+  become: true
+
+- name: Freeipa-server-acme | Create the ACME cluster issuer
+  kubernetes.core.k8s:
+    state: present
+    apply: True
+    src: "{{ cert_manager_kustomize_temp_directory.path }}/freeipa-issuer/certmanager_clusterissuer.yaml"
+  become: true
