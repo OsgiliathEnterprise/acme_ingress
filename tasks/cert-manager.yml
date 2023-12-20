@@ -1,9 +1,9 @@
 ---
 
-- name: Facts
+- name: Cert-manager | Facts
   ansible.builtin.import_tasks: cert-manager-facts.yml
 
-- name: Create freeipa user
+- name: Cert-manager | Create freeipa user
   ansible.builtin.include_role:
     name: tcharl.ansible_users
   vars:
@@ -22,5 +22,5 @@
         groups:
           - wheel
 
-- name: Facts
+- name: Cert-manager | Freeipa server acme configuration
   ansible.builtin.include_tasks: freeipa-server-acme.yml
